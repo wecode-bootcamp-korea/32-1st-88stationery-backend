@@ -37,6 +37,10 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     # 'django.contrib.admin',
     # 'django.contrib.auth',
+    'users',
+    'products',
+    'questions',
+    # 'orders',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -148,3 +152,5 @@ CORS_ALLOW_HEADERS = (
 )
 
 APPEND_SLASH = False
+
+AUTH_USER_MODEL = 'products.Product'
