@@ -15,7 +15,7 @@ class Answer(models.Model):
     writer     = models.CharField(max_length=30)
     detail     = models.CharField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
-    question   = models.ForeignKey('Questions', on_delete=models.CASCADE)
+    question   = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'answers'
