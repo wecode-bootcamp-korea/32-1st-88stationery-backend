@@ -10,33 +10,35 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('users', '__first__'),
+        ('products', '__first__'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Question',
+            name='Order',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=50)),
-                ('detail', models.CharField(max_length=300)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('qunatity', models.IntegerField()),
+                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('status', models.CharField(max_length=30)),
+                ('product', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='products.product')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
             ],
             options={
-                'db_table': 'questions',
+                'db_table': 'orders',
             },
         ),
         migrations.CreateModel(
-            name='Answer',
+            name='Cart',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('writer', models.CharField(max_length=30)),
-                ('detail', models.CharField(max_length=1000)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='questions.question')),
+                ('qunatity', models.IntegerField()),
+                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.product')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
             ],
             options={
-                'db_table': 'answers',
+                'db_table': 'carts',
             },
         ),
     ]
