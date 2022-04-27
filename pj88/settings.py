@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'users',
     'products',
     'questions',
-    # 'orders',
+    'orders',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
