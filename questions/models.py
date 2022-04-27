@@ -1,11 +1,10 @@
 from django.db    import models
-from users.models import User
 
 class Question(models.Model):
     title      = models.CharField(max_length=50)
     detail     = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
-    user       = models.ForeignKey(User,on_delete=models.CASCADE)
+    user       = models.ForeignKey('users.User',on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'questions'

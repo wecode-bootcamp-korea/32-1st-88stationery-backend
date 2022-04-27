@@ -1,6 +1,4 @@
 from django.db       import models
-from products.models import Product
-from users.models    import User
 
 class Status(models.Model):
     status = models.CharField(max_length=30)
@@ -9,8 +7,8 @@ class Status(models.Model):
         db_table = 'statuses'
 
 class Order(models.Model):
-    user     = models.ForeignKey(User,    on_delete=models.CASCADE)
-    product  = models.ForeignKey(Product, on_delete=models.PROTECT)
+    user     = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    product  = models.ForeignKey('products.Product', on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
     price    = models.DecimalField(max_digits=10, decimal_places=2)
     status   = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
@@ -19,8 +17,8 @@ class Order(models.Model):
         db_table = 'orders'
 
 class Cart(models.Model):
-    user     = models.ForeignKey(User,    on_delete=models.CASCADE)
-    product  = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user     = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    product  = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price    = models.DecimalField(max_digits=10, decimal_places=2)
 
