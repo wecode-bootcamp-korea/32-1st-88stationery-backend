@@ -1,5 +1,4 @@
 from django.db    import models
-from tkinter      import CASCADE
 from users.models import User
 
 class Question(models.Model):
