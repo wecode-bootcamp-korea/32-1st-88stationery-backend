@@ -14,7 +14,7 @@ class Product(models.Model):
     detail_image_url = models.CharField(max_length=500)
     created_at       = models.DateTimeField(auto_now_add=True)
     updated_at       = models.DateTimeField(auto_now=True)
-    new_product      = models.BooleanField()           
+    is_new           = models.BooleanField()           
     category         = models.ForeignKey(Category, on_delete=models.CASCADE)
    
     class Meta:
