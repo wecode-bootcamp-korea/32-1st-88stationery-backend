@@ -1,0 +1,4 @@
+email,password,name,phone_number,birth_date,address1,address2
+testuser1@gmail.com,1q2w3e4r!,테스트유저1,1111,2000-01-01,주소1,주소2
+testuser2@gmail.com,1q2w3e4r!,테스트유저2,1111,2000-02-01,주소1,주소2
+testuser3@gmail.com,1q2w3e4r!,테스트유저3,1111,2000-03-01,주소1,주소2

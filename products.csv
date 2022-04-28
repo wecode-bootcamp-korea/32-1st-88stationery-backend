@@ -1,0 +1,6 @@
+name,price,thumnail_url,detail,detail_image_url,category_id,is_new
+그냥연필2, 500, pencil_url, pencil_detail, pencil_detail_url,1,0
+그냥컵,1000,cup_url, cup_detail, cup_detail_url,2,1
+그냥책,5000,book_url, book_detail, book_detail_url ,3,0
+그냥피규어,50000,figure_url, figure_detail, figure_detail_url, 4,0
+그냥빵,1500,bread_url, bread_detail, book_detail_url, 5,1
