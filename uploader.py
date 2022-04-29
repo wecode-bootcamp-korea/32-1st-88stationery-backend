@@ -97,8 +97,8 @@ def order_uploader() :
                                  price      = price,
                                  product_id = product_id,
                                  status_id  = status_id,
-
                                  user_id    = user_id)
+                                 
 def cart_uploader()  :
     with open(CSV_PATH_ORDERS) as in_file:
         data_reader = csv.reader(in_file)
