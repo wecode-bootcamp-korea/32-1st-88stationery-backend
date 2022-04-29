@@ -16,12 +16,12 @@ class SignUpView(View):
             password     = data['password']
             name         = data['name']
             phone_number = data['phone_number']
-            birth_date    = data['birth_date']
+            birth_date   = data['birth_date']
             address1     = data['address1']
             address2     = data['address2']
 
             if User.objects.filter(email=email).exists():
-                return JsonResponse({'message':'ALREADY_EXISTS'},status=400)
+                return JsonResponse({'message':'ALREADY_EXISTS'},status=401)
 
             Validation.email_validate(email)
             Validation.password_validate(password)
@@ -37,7 +37,7 @@ class SignUpView(View):
                 address1     = address1,
                 address2     = address2
             )
-            return JsonResponse({'message':'SUCCESS'},status=200)
+            return JsonResponse({'message':'SUCCESS'},status=201)
 
         except KeyError:
             return JsonResponse({'message':'KEY_ERROR'},status=400)
@@ -51,7 +51,7 @@ class SignInView(View):
             user = User.objects.get(email=data['email'])
 
             if not bcrypt.checkpw(data['password'].encode('utf-8'),user.password.encode('utf-8')):
-                return JsonResponse({'message':'INVALID_PASSWORD'},status=400)
+                return JsonResponse({'message':'INVALID_PASSWORD'},status=401)
 
             access_token = jwt.encode({'id':user.id},settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
@@ -60,6 +60,6 @@ class SignInView(View):
         except KeyError:
             return JsonResponse({'message':'KEY_ERROR'},status=400)
         except User.DoesNotExist:
-            return JsonResponse({'message':'INVALID_EMAIL'},status=400)
+            return JsonResponse({'message':'INVALID_EMAIL'},status=401)
 
 # Create your views here.
