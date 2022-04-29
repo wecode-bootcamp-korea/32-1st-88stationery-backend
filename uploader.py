@@ -30,15 +30,16 @@ def product_uploader() :
         data_reader = csv.reader(in_file)
         next(data_reader, None)
         for row in data_reader:
-            category_id = Category.objects.get(name = row[5]).id
+            category_id = Category.objects.get(name = row[6]).id
             
             Product.objects.create(name             = row[0],
                                    price            = row[1],
-                                   thumnail_url     = row[2],
-                                   detail           = row[3],
-                                   detail_image_url = row[4],
+                                   thumnail_url_1   = row[2],
+                                   thumnail_url_2   = row[3],
+                                   detail           = row[4],
+                                   detail_image_url = row[5],
                                    category_id      = category_id,
-                                   is_new           = row[6])
+                                   is_new           = row[7])
 
 def user_uploader() :
     with open(CSV_PATH_USERS) as in_file:
@@ -98,7 +99,7 @@ def order_uploader() :
                                  product_id = product_id,
                                  status_id  = status_id,
                                  user_id    = user_id)
-                                 
+
 def cart_uploader()  :
     with open(CSV_PATH_ORDERS) as in_file:
         data_reader = csv.reader(in_file)
