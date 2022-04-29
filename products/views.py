@@ -28,7 +28,8 @@ class CategoryView(View):
     def post(self, request):
         data        = json.loads(request.body)
         result      = []
-        category_id = Category.objects.get(name = data['name']).id
+        category    = Category.objects.get(name = data['name'])
+        category_id = category.id
         products    = Product.objects.filter(category_id = category_id)
 
         for product in products:
@@ -37,7 +38,9 @@ class CategoryView(View):
                     "name" : product.name,
                     "thumnail_url_1" : product.thumnail_url_1,
                     "thumnail_url_2" : product.thumnail_url_2,
-                    "price" : product.price
+                    "price" : product.price,
+                    "category_detail" : category.detail,
+                    "category_name"   : category.name
                 }
             )
 

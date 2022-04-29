@@ -1,8 +1,9 @@
+from pyexpat import model
 from django.db import models
 
 class Category(models.Model):
-    name = models.CharField(max_length=45)
-    
+    name   = models.CharField(max_length=45)
+    detail = models.CharField(max_length=300, null=True) 
     class Meta:
         db_table = 'categories'
 
