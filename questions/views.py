@@ -92,7 +92,8 @@ class AnswerView(View):
     @log_in_decorator
     def get(self,request):
         user = request.user
-        answers = Answer.objects.filter(writer=user.email)
+        question = Question.objects.get(user_id=user.id)
+        answers = Answer.objects.filter(question_id=question.id)
         result = []
 
         for answer in answers:
@@ -112,10 +113,6 @@ class AnswerView(View):
             data      = json.loads(request.body)
             answer_id = data['answer_id']
             answer    = Answer.objects.get(id=answer_id)
-            user      = request.user
-            
-            if not user.email != answer.writer:
-                return JsonResponse({'message':'권한없음'},status=400)
 
             Answer.objects.filter(id=answer.id).delete()
 
