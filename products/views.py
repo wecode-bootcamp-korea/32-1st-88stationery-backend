@@ -17,39 +17,46 @@ class ProductView(View):
                     "thumnail_url_1" : product.thumnail_url_1,
                     "thumnail_url_2" : product.thumnail_url_2,
                     "price" : product.price,
-                    "is_new" : product.is_new
+                    "is_new" : product.is_new,
+                    "product_id" : product.id
                 }
             )
         
         return JsonResponse({'products' : result}, status=200)
 
 class CategoryView(View):
-    def post(self, request):
-        data        = json.loads(request.body)
+    def post(self, request, category_id):
+        # data        = json.loads(request.body)
         result      = []
-        category    = Category.objects.get(name = data['name'])
-        category_id = category.id
+        product_result = []
+        category    = Category.objects.get(id = category_id)
+        # category_id = category.id
         products    = Product.objects.filter(category_id = category_id)
-
+        
+        result.append(
+            {
+                "category_detail" : category.detail,
+                 "category_name"   : category.name
+            }
+        )
         for product in products:
-            result.append(
+            product_result.append(
                 {
                     "name" : product.name,
                     "thumnail_url_1" : product.thumnail_url_1,
                     "thumnail_url_2" : product.thumnail_url_2,
                     "price" : product.price,
-                    "category_detail" : category.detail,
-                    "category_name"   : category.name
+                    "product_id" : product.id
                 }
             )
 
-        return JsonResponse({'products' : result}, status=200) 
+        return JsonResponse({'category' : result, 'products' : product_result}, status=200) 
 
 class DetailView(View):
-    def post(self, request):
-        data       = json.loads(request.body)
+    def post(self, request, product_id):
+        # data       = json.loads(request.body)
         result     = []
-        product_id = Product.objects.get(name = data['name']).id
+        # product_id = Product.objects.get(name = data['name']).id
         products   = Product.objects.filter(id = product_id)
 
         for product in products:
@@ -61,7 +68,8 @@ class DetailView(View):
                     "price" : product.price,
                     "detail" : product.detail,
                     "detail_image_url" : product.detail_image_url,
-                    "is_new" : product.is_new
+                    "is_new" : product.is_new,
+                    "product_id" : product.id
                 }
             )
 
