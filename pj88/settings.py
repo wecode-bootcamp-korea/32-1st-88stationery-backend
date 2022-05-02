@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from my_settings import DATABASES, SECRET_KEY, ALGORITHM
+from my_settings import DATABASES, SECRET_KEY, ALGORITHM, SECRET
 
 import pymysql
 
@@ -154,3 +154,9 @@ CORS_ALLOW_HEADERS = (
 APPEND_SLASH = False
 
 AUTH_USER_MODEL = 'products.Product'
+
+#jwt
+
+ALGORITHM = ALGORITHM
+
+SECRET = SECRET 
