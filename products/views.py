@@ -1,9 +1,4 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 import json
-from unicodedata import category
 
 from products.models import Category, Product
 from django.http     import HttpResponse, JsonResponse
