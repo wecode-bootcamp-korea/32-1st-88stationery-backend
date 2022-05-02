@@ -1,7 +1,4 @@
-from ast import Or
-from curses.ascii import US
 import json
-from unicodedata import decimal
 
 from orders.models   import Order, Cart, Status 
 from products.models import Product
