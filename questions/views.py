@@ -21,7 +21,7 @@ class QuestionView(View):
                 user_id = user_id
             )
 
-            return JsonResponse({'message':'생성완료'},status=200)
+            return JsonResponse({'message':'생성완료'},status=201)
         except KeyError:
             return JsonResponse({'message':'키에러'},status=400)
         except JSONDecodeError:
@@ -31,15 +31,13 @@ class QuestionView(View):
     def get(self,request):
         user      = request.user
         questions = Question.objects.filter(user_id=user.id)
-        result    = []
-        for question in questions:
-            result.append({
-                'id'         : question.id,
-                'title'      : question.title,
-                'detail'     : question.detail,
-                'user'       : user.name,
-                'date'       : question.created_at
-            })
+        result = [{
+            'id'     : question.id,
+            'user'   : user.name,
+            'title'  : question.title,
+            'detail' : question.detail,
+            'date'   : question.created_at,
+        }for question in questions]
         return JsonResponse({'result':result},status=200)
 
     @log_in_decorator
@@ -47,10 +45,10 @@ class QuestionView(View):
         try:
             data        = json.loads(request.body)
             question_id = data['question_id']
-            question    = Question.objects.get(id=question_id)
 
-            Question.objects.filter(id=question.id).delete()
-            return JsonResponse({'mesaage':'삭제완료'},status=200)
+            Question.objects.get(id=question_id).delete()
+
+            return JsonResponse({'mesaage':'삭제완료'},status=204)
         except KeyError:
             return JsonResponse({'message':'키에러'},status=400)
         except Question.DoesNotExist:
@@ -93,11 +91,11 @@ class AnswerView(View):
             for question in questions:
                 answers = Answer.objects.filter(question_id=question.id)
                 for answer in answers: 
-                        result.append({
+                    result.append({
                         'id'          : answer.id,
                         'writer'      : answer.writer,
                         'detail'      : answer.detail,
-                        'question_id' : answer.question_id, 
+                        'question_id' : answer.question_id,
                         'date'        : answer.created_at
                     })
     
@@ -110,11 +108,10 @@ class AnswerView(View):
         try:
             data      = json.loads(request.body)
             answer_id = data['answer_id']
-            answer    = Answer.objects.get(id=answer_id)
+            
+            Answer.objects.get(id=answer_id).delete()
 
-            Answer.objects.filter(id=answer.id).delete()
-
-            return JsonResponse({'message':'삭제완료'},status=200)
+            return JsonResponse({'message':'삭제완료'},status=204)
         except KeyError:
             return JsonResponse({'message':'키에러'},status=400)
         except Answer.DoesNotExist:
