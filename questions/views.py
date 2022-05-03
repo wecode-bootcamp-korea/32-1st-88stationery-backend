@@ -3,11 +3,8 @@ import json
 from django.views        import View
 from django.http         import JsonResponse
 from questions.models    import Answer,Question
-from core.decorator import log_in_decorator
+from core.decorator      import log_in_decorator
 from json.decoder        import JSONDecodeError
-
-from users.models import User
-
 
 class QuestionView(View):
     @log_in_decorator
@@ -28,13 +25,13 @@ class QuestionView(View):
         except KeyError:
             return JsonResponse({'message':'키에러'},status=400)
         except JSONDecodeError:
-            return JsonResponse({'message':'json형태이상함'})
+            return JsonResponse({'message':'json형태이상함'},status=400)
 
     @log_in_decorator
     def get(self,request):
-        user = request.user
+        user      = request.user
         questions = Question.objects.filter(user_id=user.id)
-        result = []
+        result    = []
         for question in questions:
             result.append({
                 'id'         : question.id,
@@ -43,19 +40,14 @@ class QuestionView(View):
                 'user'       : user.name,
                 'date'       : question.created_at
             })
-        
         return JsonResponse({'result':result},status=200)
 
     @log_in_decorator
     def delete(self,request):
         try:
-            user        = request.user
             data        = json.loads(request.body)
             question_id = data['question_id']
             question    = Question.objects.get(id=question_id)
-
-            # if not user.id != question.user_id:
-            #     return JsonResponse({'message':'권한없음'},status=400)
 
             Question.objects.filter(id=question.id).delete()
             return JsonResponse({'mesaage':'삭제완료'},status=200)
@@ -78,8 +70,8 @@ class AnswerView(View):
             question    = Question.objects.get(id=question_id)
 
             Answer.objects.create(
-                writer = writer,
-                detail = detail,
+                writer      = writer,
+                detail      = detail,
                 question_id = question.id
             )
 
@@ -88,24 +80,30 @@ class AnswerView(View):
             return JsonResponse({'message':'키에러'},status=400)
         except JSONDecodeError:
             return JsonResponse({'message':'json형태이상함'},status=400)
+        except Question.DoesNotExist:
+            return JsonResponse({'message':'질문없음'},status=400)
     
     @log_in_decorator
     def get(self,request):
-        user = request.user
-        question = Question.objects.get(user_id=user.id)
-        answers = Answer.objects.filter(question_id=question.id)
-        result = []
+        try:
+            user      = request.user
+            questions = Question.objects.filter(user_id=user.id)
+            result    = []
 
-        for answer in answers:
-            result.append({
-                'id'          : answer.id,
-                'writer'      : answer.writer,
-                'detail'      : answer.detail,
-                'question_id' : answer.question_id, 
-                'date'        : answer.created_at
-            })
-
-        return JsonResponse({'result':result},status=200)
+            for question in questions:
+                answers = Answer.objects.filter(question_id=question.id)
+                for answer in answers: 
+                        result.append({
+                        'id'          : answer.id,
+                        'writer'      : answer.writer,
+                        'detail'      : answer.detail,
+                        'question_id' : answer.question_id, 
+                        'date'        : answer.created_at
+                    })
+    
+            return JsonResponse({'result':result},status=200)
+        except Question.DoesNotExist:
+            return JsonResponse({'message':'질문없음'},status=400)
 
     @log_in_decorator
     def delete(self,request):
