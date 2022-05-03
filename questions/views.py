@@ -73,7 +73,7 @@ class AnswerView(View):
                 question_id = question.id
             )
 
-            return JsonResponse({'message':'댓글등록'},status=200)
+            return JsonResponse({'message':'댓글등록'},status=201)
         except KeyError:
             return JsonResponse({'message':'키에러'},status=400)
         except JSONDecodeError:
