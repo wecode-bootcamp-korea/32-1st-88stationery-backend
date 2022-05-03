@@ -1,5 +1,5 @@
 from django.urls import path
-from orders.views import CartDeleteView, OrderView, OrderCreateView , CartView, CartCreateView
+from orders.views import OrderView, CartView
 
 urlpatterns = [
     path('', OrderView.as_view()),
