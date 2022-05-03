@@ -6,7 +6,7 @@ from django.views    import View
 
 class MainView(View):
     def get(self, request):
-        limit        = int(request.GET.get('limit', 4))
+        limit        = int(request.GET.get('limit', 6))
         offset       = int(request.GET.get('offset', 0))
         new_products = Product.objects.filter(is_new = True)[offset:offset+limit]
         result       = []

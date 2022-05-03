@@ -34,12 +34,12 @@ class ProductView(View):
 
 class CategoryView(View):
     def get(self, request, category_id):
-        result      = []
+        result         = []
         product_result = []
-        order_method = int(request.GET.get('sort_method', 0))
-        limit        = int(request.GET.get('limit', 8))
-        offset       = int(request.GET.get('offset', 0))
-        category    = Category.objects.get(id = category_id)
+        order_method   = int(request.GET.get('sort_method', 0))
+        limit          = int(request.GET.get('limit', 8))
+        offset         = int(request.GET.get('offset', 0))
+        category       = Category.objects.get(id = category_id)
 
         if order_method   == 0:
             products = Product.objects.all()[offset:offset+limit]
@@ -64,6 +64,7 @@ class CategoryView(View):
                     "thumnail_url_1" : product.thumnail_url_1,
                     "thumnail_url_2" : product.thumnail_url_2,
                     "price" : product.price,
+                    "is_new" : product.is_new,
                     "product_id" : product.id
                 }
             )

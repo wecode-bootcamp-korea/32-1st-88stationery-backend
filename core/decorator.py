@@ -8,7 +8,7 @@ from users.models import User
 def log_in_decorator(func):
     def wrapper(self, request, *args, **kwargs):
         try:
-            access_token = request.headers.get('token')
+            access_token = request.headers.get('Authorization')
             payload      = jwt.decode(access_token, SECRET, algorithms=ALGORITHM)
             request.user = User.objects.get(id=payload['id'])
 
