@@ -39,16 +39,21 @@ class CategoryView(View):
         order_method   = int(request.GET.get('sort_method', 0))
         limit          = int(request.GET.get('limit', 8))
         offset         = int(request.GET.get('offset', 0))
-        category       = Category.objects.get(id = category_id)
+        if category_id == 6 : 
+            old_products = Product.objects.all()
+            category     = Category.objects.get(id = category_id)
+        else : 
+            old_products = Product.objects.filter(category_id = category_id)
+            category = Category.objects.get(id = category_id)
 
         if order_method   == 0:
-            products = Product.objects.all()[offset:offset+limit]
+            products = old_products[offset:offset+limit]
         elif order_method == 1:
-            products = Product.objects.order_by('price')[offset:offset+limit]
+            products = old_products.order_by('price')[offset:offset+limit]
         elif order_method == 2:
-            products = Product.objects.order_by('-price')[offset:offset+limit]
+            products = old_products.order_by('-price')[offset:offset+limit]
         elif order_method == 3:
-            products = Product.objects.filter(is_new = True)[offset:offset+limit]
+            products = old_products.filter(is_new = True)[offset:offset+limit]
         
         result.append(
             {
