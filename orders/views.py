@@ -10,7 +10,7 @@ from json.decoder    import JSONDecodeError
 
 class CartView(View):
     @log_in_decorator
-    def post(self,request):
+    def get(self,request):
         try : 
             carts = Cart.objects.filter(user_id = request.user.id)
             result = []
@@ -29,8 +29,7 @@ class CartView(View):
             return JsonResponse({'carts' : result}, status=200)
         except KeyError:
             return JsonResponse('KeyError',status = 401)   
-        
-class CartCreateView(View):
+
     @log_in_decorator
     def post(self,request):
         try : 
@@ -49,8 +48,7 @@ class CartCreateView(View):
             return JsonResponse('KeyError',status = 401)    
         except JSONDecodeError:
             return JsonResponse({'message':'json형태이상함'},status=400)
-            
-class CartDeleteView(View):
+
     def delete(self,request):
         try:
             #user        = request.user
@@ -65,10 +63,10 @@ class CartDeleteView(View):
             return JsonResponse({'message':'삭제할 장바구니가 존재하지 않습니다.'},status=400)
         except JSONDecodeError:
             return JsonResponse({'message':'json형태이상함'},status=400)
-            
+
 class OrderView(View):
     @log_in_decorator
-    def post(self,request):
+    def get(self,request):
         try : 
             orders = Order.objects.filter(user_id = request.user.id)
             result = []
@@ -90,7 +88,6 @@ class OrderView(View):
         except KeyError:
             return JsonResponse('KeyError',status = 401)    
 
-class OrderCreateView(View):
     @log_in_decorator
     def post(self,request):
         try : 
