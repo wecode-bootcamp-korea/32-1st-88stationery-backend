@@ -21,8 +21,8 @@ class CartView(View):
                 result.append({
                         "cart_id" : cart.id,
                         "product"  : product.name,
-                        "produtc_image_1" : product.thumnail_url_1,
-                        "produtc_image_2" : product.thumnail_url_2,
+                        "product_image_1" : product.thumnail_url_1,
+                        "product_image_2" : product.thumnail_url_2,
                         "price" : cart.price,
                         "quantity" : cart.quantity
                     })
@@ -90,8 +90,8 @@ class OrderView(View):
                 result.append({
                         "order_id" : order.id,
                         "product"  : product.name,
-                        "produtc_image_1" : product.thumnail_url_1,
-                        "produtc_image_2" : product.thumnail_url_2,
+                        "product_image_1" : product.thumnail_url_1,
+                        "product_image_2" : product.thumnail_url_2,
                         "price" : order.price,
                         "quantity" : order.quantity,
                         "status" : status.status
