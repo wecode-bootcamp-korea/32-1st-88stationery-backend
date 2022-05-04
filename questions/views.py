@@ -36,7 +36,7 @@ class QuestionView(View):
             'user'   : user.name,
             'title'  : question.title,
             'detail' : question.detail,
-            'date'   : question.created_at,
+            'date'   : question.created_at.strftime('%Y-%m-%d'),
         }for question in questions]
         return JsonResponse({'result':result},status=200)
 
@@ -96,7 +96,7 @@ class AnswerView(View):
                         'writer'      : answer.writer,
                         'detail'      : answer.detail,
                         'question_id' : answer.question_id,
-                        'date'        : answer.created_at
+                        'date'        : answer.created_at.strftime('%Y-%m-%d %H:%M')
                     })
     
             return JsonResponse({'result':result},status=200)
