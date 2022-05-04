@@ -13,10 +13,10 @@ class Product(models.Model):
     thumnail_url_1   = models.CharField(max_length=500)
     thumnail_url_2   = models.CharField(max_length=500,null=True)
     detail           = models.TextField()
-    detail_image_url = models.CharField(max_length=500)
     created_at       = models.DateTimeField(auto_now_add=True)
     updated_at       = models.DateTimeField(auto_now=True)
-    is_new           = models.BooleanField()           
+    is_new           = models.BooleanField(default=False)
+    is_best          = models.BooleanField(default=False)           
     category         = models.ForeignKey(Category, on_delete=models.CASCADE)
    
     class Meta:
