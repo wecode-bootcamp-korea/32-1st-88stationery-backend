@@ -77,16 +77,16 @@ class CategoryView(View):
 
 class DetailView(View):
     def get(self, request, product_id):
-        result     = []
-        product   = Product.objects.filter(id = product_id)
+        result    = []
+        product   = Product.objects.get(id = product_id)
         result.append({
                 "name" : product.name,
                 "thumnail_url_1" : product.thumnail_url_1,
                 "thumnail_url_2" : product.thumnail_url_2,
                 "price" : product.price,
                 "detail" : product.detail,
-                "detail_image_url" : product.detail_image_url,
                 "is_new" : product.is_new,
+                "is_best" : product.is_best,
                 "product_id" : product.id
             })
         return JsonResponse({'product' : result}, status = 200) 
