@@ -77,6 +77,22 @@ class CartView(View):
 
         except JSONDecodeError:
             return JsonResponse({'message':'json형태이상함'}, status = 400)
+            
+    def patch(self,request):
+        try:
+            data = json.loads(request.body)
+            data = data['carts_info']
+            for i in range(len(data)) :
+                quantity = data[i]["quantity"]
+                price    = data[i]["price"]
+                Cart.objects.filter(id = data[i]["cart_id"]).update(
+                    quantity = quantity,
+                    price    = price
+                )
+            return JsonResponse({'message' : 'cart updated'},status = 200)
+            
+        except KeyError:
+            return JsonResponse({'message':'KeyError'}, status = 400)
 
 class OrderView(View):
     @log_in_decorator
