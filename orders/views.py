@@ -13,18 +13,17 @@ from decimal         import Decimal
 class CartView(View):
     @log_in_decorator
     def get(self,request):
-        try : 
+        try: 
             carts = Cart.objects.filter(user_id = request.user.id)
             result = []
             for cart in carts:
-                product = Product.objects.get(id = cart.product_id)
                 result.append({
-                        "cart_id" : cart.id,
-                        "product"  : product.name,
-                        "product_image_1" : product.thumnail_url_1,
-                        "product_image_2" : product.thumnail_url_2,
-                        "price" : cart.price,
-                        "quantity" : cart.quantity
+                    "cart_id" : cart.id,
+                    "product"  : cart.product.name,
+                    "product_image_1" : cart.product.thumnail_url_1,
+                    "product_image_2" : cart.product.thumnail_url_2,
+                    "price" : cart.price,
+                    "quantity" : cart.quantity
                     })
             return JsonResponse({'carts' : result}, status = 200)
 
@@ -40,21 +39,20 @@ class CartView(View):
             price      = data['price']
             product_id = data['product_id']
 
-            if Cart.objects.filter(user_id = user_id).filter(product_id = product_id).exists():
+            if Cart.objects.filter(user_id = user_id,product_id = product_id).exists():
                 cart = Cart.objects.filter(user_id = user_id).get(product_id = product_id)
                 cart.quantity += int(quantity)
                 cart.price    += Decimal(price)
                 cart.save()
                 return JsonResponse({'message' : 'cart updated'}, status = 201)
 
-            else:
-                Cart.objects.create(   
-                    quantity   = quantity,
-                    price      = price,
-                    product_id = data['product_id'],
-                    user_id    = user_id
-                )
-                return JsonResponse({'message': 'cart created'}, status = 201)
+            Cart.objects.create(   
+                quantity   = quantity,
+                price      = price,
+                product_id = data['product_id'],
+                user_id    = user_id
+            )
+            return JsonResponse({'message': 'cart created'}, status = 201)
 
         except KeyError:
             return JsonResponse({'message':'KeyError'}, status = 400)   
@@ -77,7 +75,7 @@ class CartView(View):
 
         except JSONDecodeError:
             return JsonResponse({'message':'json형태이상함'}, status = 400)
-            
+
     def patch(self,request):
         try:
             data = json.loads(request.body)
