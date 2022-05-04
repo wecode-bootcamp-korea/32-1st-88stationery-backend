@@ -37,6 +37,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     # 'django.contrib.admin',
     # 'django.contrib.auth',
+    'search',
     'users',
     'products',
     'orders',
