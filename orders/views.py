@@ -2,7 +2,6 @@ from ast import Or
 import json
 
 from orders.models   import Order, Cart
-from products.models import Product
 from django.http     import HttpResponse, JsonResponse
 from django.views    import View
 from core.decorator  import log_in_decorator
