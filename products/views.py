@@ -5,7 +5,7 @@ from django.views    import View
 class ProductView(View):
     def get(self, request):
         order_method = int(request.GET.get('sort_method', 0))
-        limit        = int(request.GET.get('limit', 8))
+        limit        = int(request.GET.get('limit', 4))
         offset       = int(request.GET.get('offset', 0))
         
         if order_method   == 0:
@@ -37,7 +37,7 @@ class CategoryView(View):
         result         = []
         product_result = []
         order_method   = int(request.GET.get('sort_method', 0))
-        limit          = int(request.GET.get('limit', 8))
+        limit          = int(request.GET.get('limit', 4))
         offset         = int(request.GET.get('offset', 0))
         if category_id == 6 : 
             old_products = Product.objects.all()
