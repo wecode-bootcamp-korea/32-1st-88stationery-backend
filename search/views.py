@@ -5,10 +5,10 @@ from django.views     import View
 
 class SearchView(View):
     def get(self, request):
-        limit         = int(request.GET.get('limit', 4))
-        offset        = int(request.GET.get('offset', 0))
-        search_word   = str(request.GET.get('search'))
-        searched_products  = Product.objects.filter(name__icontains=search_word).distinct()[offset:offset+limit]
+        limit             = int(request.GET.get('limit', 4))
+        offset            = int(request.GET.get('offset', 0))
+        search_word       = str(request.GET.get('search'))
+        searched_products = Product.objects.filter(name__icontains=search_word).distinct()[offset:offset+limit]
         result = []
 
         for product in searched_products:
