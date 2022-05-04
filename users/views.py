@@ -6,7 +6,8 @@ from django.views           import View
 from users.models           import User
 from django.core.exceptions import ValidationError
 from users.validation       import Validation
-from django.conf            import settings
+from django.conf            import Settings
+from pj88.settings          import SECRET, ALGORITHM
 
 class SignUpView(View):
     def post(self, request):
@@ -53,9 +54,9 @@ class SignInView(View):
             if not bcrypt.checkpw(data['password'].encode('utf-8'),user.password.encode('utf-8')):
                 return JsonResponse({'message':'INVALID_PASSWORD'},status=401)
 
-            access_token = jwt.encode({'id':user.id},settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+            access_token = jwt.encode({'id':user.id}, SECRET, algorithm=ALGORITHM)
 
-            return JsonResponse({'message':access_token},status=200)
+            return JsonResponse({'Authorization':access_token, 'user_name' : user.name},status=200)
 
         except KeyError:
             return JsonResponse({'message':'KEY_ERROR'},status=400)
