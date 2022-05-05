@@ -9,6 +9,8 @@ from json.decoder    import JSONDecodeError
 from django.db       import transaction
 from decimal         import Decimal
 
+from products.models import Product
+
 class CartView(View):
     @log_in_decorator
     def get(self,request):
@@ -21,7 +23,7 @@ class CartView(View):
                     "product"  : cart.product.name,
                     "product_image_1" : cart.product.thumnail_url_1,
                     "product_image_2" : cart.product.thumnail_url_2,
-                    "price" : cart.price,
+                    "price" : cart.product.price,
                     "quantity" : cart.quantity
                     })
             return JsonResponse({'carts' : result}, status = 200)
@@ -112,26 +114,38 @@ class OrderView(View):
             return JsonResponse({'orders' : result}, status = 200)
 
         except KeyError:
-            return JsonResponse({'message':'KeyError'}, status = 400)   
+            return JsonResponse({'message':'KeyError'}, status = 400) 
     
     @log_in_decorator
     def post(self,request):
         try : 
             data = json.loads(request.body)
-            carts_id = list(data['cart_id'])
+            if 'cart_id' in list(data.keys()):
+                carts_id = list(data['cart_id'])
 
-            with transaction.atomic():
-                order_list = []
-                for i in carts_id:
-                    cart = Cart.objects.get(id = i)
-                    order_list.append(Order(
-                        quantity   = cart.quantity,
-                        price      = cart.price,
-                        product_id = cart.product_id,
-                        user_id    = cart.user_id
-                        ))
-                    cart.delete()
-                Order.objects.bulk_create(order_list)
+                with transaction.atomic():
+                    order_list = []
+                    for i in carts_id:
+                        cart = Cart.objects.get(id = i)
+                        order_list.append(Order(
+                            quantity   = cart.quantity,
+                            price      = cart.price,
+                            product_id = cart.product_id,
+                            user_id    = cart.user_id
+                            ))
+                        cart.delete()
+                    Order.objects.bulk_create(order_list)
+            else:
+                user_id = request.user
+                product = Product.objects.get(id = data['product_id'])
+                quantity   = data['quantity']
+                user_id    = request.user.id
+                Order.objects.create(  
+                    product_id = product.id,
+                    quantity = quantity,
+                    user_id = user_id,
+                    price = product.price
+                )
             return JsonResponse({'message' : 'order created'}, status = 201)
 
         except KeyError:

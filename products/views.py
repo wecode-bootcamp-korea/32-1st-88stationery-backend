@@ -29,6 +29,7 @@ class ProductView(View):
                     "thumnail_url_2" : product.thumnail_url_2,
                     "price" : product.price,
                     "is_new" : product.is_new,
+                    "is_best" : product.is_best,
                     "product_id" : product.id
                 }
             )
@@ -72,6 +73,7 @@ class CategoryView(View):
                     "thumnail_url_2" : product.thumnail_url_2,
                     "price" : product.price,
                     "is_new" : product.is_new,
+                    "is_best" : product.is_best,
                     "product_id" : product.id
                 }
             )
