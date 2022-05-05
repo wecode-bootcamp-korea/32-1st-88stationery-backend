@@ -16,6 +16,8 @@ class ProductView(View):
             products = Product.objects.order_by('-price')[offset:offset+limit]
         elif order_method == 3:
             products = Product.objects.filter(is_new = True)[offset:offset*limit]
+        elif order_method == 4:
+            products = Product.objects.filter(is_best = True)[offset:offset*limit]   
 
         result = []
 
