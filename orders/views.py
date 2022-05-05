@@ -135,6 +135,7 @@ class OrderView(View):
                             ))
                         cart.delete()
                     Order.objects.bulk_create(order_list)
+                    
             else:
                 user_id = request.user
                 product = Product.objects.get(id = data['product_id'])
