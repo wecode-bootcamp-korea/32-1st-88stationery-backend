@@ -24,7 +24,8 @@ class CartView(View):
                     "product_image_1" : cart.product.thumnail_url_1,
                     "product_image_2" : cart.product.thumnail_url_2,
                     "price" : cart.product.price,
-                    "quantity" : cart.quantity
+                    "quantity" : cart.quantity,
+                    "product_id" : cart.product.id
                     })
             return JsonResponse({'carts' : result}, status = 200)
 
@@ -109,7 +110,8 @@ class OrderView(View):
                         "product_image_2" : product.thumnail_url_2,
                         "price" : order.price,
                         "quantity" : order.quantity,
-                        "status" : status.status
+                        "status" : status.status,
+                        "product_id" : order.product.id
                     })
             return JsonResponse({'orders' : result}, status = 200)
 
